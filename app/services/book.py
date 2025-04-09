@@ -11,8 +11,8 @@ async def get_book_list(
         page: int,
         page_size: int
 ):
-    data = book_crud_get_list(db=db)
-    total_counts = book_crud_get_counts(db=db)
+    data = await book_crud_get_list(db=db)
+    total_counts = await book_crud_get_counts(db=db)
     return SearchBookListResponse(
         data=data,
         page_size=page_size,

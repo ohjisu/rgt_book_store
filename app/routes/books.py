@@ -8,7 +8,7 @@ router = APIRouter(prefix="/api/books")
 
 @router.get("",
             summary="책 목록 조회")
-def search_book_list(
+async def search_book_list(
     title: str = Query(None, description="제목"),
     author: str = Query(None, description="저자"),
     page: int = Query(1, ge=1, description="페이지 번호"),
@@ -21,8 +21,8 @@ def search_book_list(
     제목, 저자로 필터링 검색.
     """
     print(title, author, page, page_size)
-    get_book_list(page=page, page_size=page_size)
-    return []
+    res = await get_book_list(db=db, page=page, page_size=page_size)
+    return res
 
 
 @router.get("/{id}",

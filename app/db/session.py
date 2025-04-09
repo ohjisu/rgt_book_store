@@ -2,9 +2,12 @@ from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from sqlalchemy.ext.declarative import DeclarativeMeta, declarative_base
 
 from app.models.base import Base
+import os
+
+DATABASE_URL = os.environ.get("DATABASE_URL").replace("postgres://", "postgresql+asyncpg://")
 
 engine = create_async_engine(
-    "db_urls",
+    DATABASE_URL,
     pool_pre_ping=True,
     pool_recycle=3600,
     pool_size=10,
