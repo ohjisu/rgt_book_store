@@ -1,4 +1,7 @@
 from fastapi import APIRouter, Depends, Query
+from sqlalchemy.ext.asyncio import AsyncSession
+from app.services.book import get_book_list
+from app.db.session import get_db
 
 router = APIRouter(prefix="/api/books")
 
@@ -9,7 +12,8 @@ def search_book_list(
     title: str = Query(None, description="제목"),
     author: str = Query(None, description="저자"),
     page: int = Query(1, ge=1, description="페이지 번호"),
-    page_size: int = Query(10, ge=10, le=100, description="페이지 당 항목 수")
+    page_size: int = Query(10, ge=10, le=100, description="페이지 당 항목 수"),
+    db: AsyncSession = Depends(get_db)
 ):
     """
     한 페이지당 10개 항목을 조회하는 페이지네이션 적용.
@@ -17,6 +21,7 @@ def search_book_list(
     제목, 저자로 필터링 검색.
     """
     print(title, author, page, page_size)
+    get_book_list(page=page, page_size=page_size)
     return []
 
 
