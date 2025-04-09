@@ -2,6 +2,8 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.services.book import get_book_list
 from app.db.session import get_db
+from app.schemas.book import BookCreate
+from app.services.book import create_book
 
 router = APIRouter(prefix="/api/books")
 
@@ -20,8 +22,13 @@ async def search_book_list(
 
     제목, 저자로 필터링 검색.
     """
-    print(title, author, page, page_size)
-    res = await get_book_list(db=db, page=page, page_size=page_size)
+    res = await get_book_list(
+        db=db,
+        page=page,
+        page_size=page_size,
+        title=title,
+        author=author
+    )
     return res
 
 
@@ -35,7 +42,11 @@ def book_detail(id: int):
 
 @router.post("",
              summary="책 추가")
-def save_book():
+async def save_book(
+        request: BookCreate,
+        db: AsyncSession = Depends(get_db)
+):
+    await create_book(db=db, book=request)
     return None
 
 

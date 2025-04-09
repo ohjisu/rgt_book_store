@@ -1,11 +1,12 @@
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from sqlalchemy.ext.declarative import DeclarativeMeta, declarative_base
 from app.models.base import Base
+from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
-DATABASE_URL = os.environ.get("DATABASE_URL").replace("postgresql://", "postgresql+asyncpg://")
+DATABASE_URL = os.environ.get("DATABASE_URL").replace("postgres://", "postgresql+asyncpg://")
 
 engine = create_async_engine(
     DATABASE_URL,
@@ -14,12 +15,14 @@ engine = create_async_engine(
     pool_size=10,
     max_overflow=20,
     echo=False,
-    logging_name="RGT.LOGGER"
+    logging_name="RGT.LOGGER",
+    connect_args={"ssl": True}
 )
 
-AsyncSessionLocal = async_sessionmaker(
+AsyncSessionLocal = sessionmaker(
     bind=engine,
-    expire_on_commit=False
+    class_=AsyncSession,
+    # expire_on_commit=False
 )
 
 Base: DeclarativeMeta = declarative_base(cls=Base)
