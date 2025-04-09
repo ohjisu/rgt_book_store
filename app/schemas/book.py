@@ -16,6 +16,7 @@ class BookSchema(BaseModel):
     id: int
     title: str
     author: str
+    sales: int
 
     class Config:
         from_attributes = True
@@ -23,6 +24,7 @@ class BookSchema(BaseModel):
 
 class SearchBookListResponse(BaseModel):
     total_counts: int
+    total_pages: int
     page: int
     page_size: int
     data: List[BookSchema]
