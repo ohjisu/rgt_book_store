@@ -29,20 +29,22 @@
    ```
    uvicorn app.main:app --reload
    ```
-
+---
 
 ### Hosting
 - https://render.com/
 - Render 사이트의 Static Sites, Web Services 서비스를 이용했습니다
+---
 
 ### DB
 - PostgreSQL
 - Render Postgre 서비스를 이용했습니다
+---
 
 ### Backend
 - Python 3.13.3
 - FastAPI 0.115.12
-
+---
 
 ### Package
 ```
@@ -54,6 +56,7 @@ app/
 ├── schemas/ # 요청, 응답 데이터의 스키마를 정의
 └── services/ # 비즈니스 로직. crud와 routes의 중간 계층
 ```
+---
 
 ### API List
 1. 책 목록 조회
